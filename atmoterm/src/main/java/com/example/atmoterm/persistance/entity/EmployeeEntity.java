@@ -38,16 +38,6 @@ public class EmployeeEntity extends AbstractEntity {
         teamEntity.getEmployees().add(this);
     }
 
-    public void removeTeam(TeamEntity teamEntity){
-        this.teams.remove(teamEntity);
-        teamEntity.getEmployees().remove(this);
-    }
-
-    public void singOffTeams(){
-        teams.forEach(teamEntity -> teamEntity.getEmployees().remove(this));
-        this.teams.clear();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

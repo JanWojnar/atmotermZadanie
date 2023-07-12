@@ -3,7 +3,9 @@ package com.example.atmoterm.persistance.dao;
 import com.example.atmoterm.persistance.entity.ActiveEmployeeEntity;
 import com.example.atmoterm.persistance.entity.EmployeeEntity;
 import com.example.atmoterm.persistance.entity.TeamEntity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +25,20 @@ class RepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @BeforeEach
+    void setUp() {
+        teamRepository.deleteAll();
+        employeeRepository.deleteAll();
+        activeEmployeeRepository.deleteAll();
+    }
+
+    @AfterEach
+    void tearDown() {
+        teamRepository.deleteAll();
+        employeeRepository.deleteAll();
+        activeEmployeeRepository.deleteAll();
+    }
 
     @Test
     void savingEmployeesInMultipleSharedTeams() {
@@ -122,6 +138,7 @@ class RepositoryTest {
         EmployeeEntity employee3 = EmployeeEntity.builder().name("Karol").build();
         EmployeeEntity employee4 = EmployeeEntity.builder().name("Kasia").build();
         EmployeeEntity employee5 = EmployeeEntity.builder().name("Marek").build();
+
         TeamEntity teamGirlsEntity = TeamEntity.builder().name("TEAM_GIRLS").build();
         TeamEntity teamBoysEntity = TeamEntity.builder().name("TEAM_BOYS").build();
         TeamEntity teamAllEntity = TeamEntity.builder().name("TEAM_ALL").build();
