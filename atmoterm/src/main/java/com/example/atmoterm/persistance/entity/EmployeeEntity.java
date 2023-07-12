@@ -21,7 +21,6 @@ import java.util.Objects;
 @SuperBuilder
 @NoArgsConstructor
 @Table(name = "EMPLOYEE")
-@Validated
 public class EmployeeEntity extends AbstractEntity {
 
     @Column(name = "NAME")
