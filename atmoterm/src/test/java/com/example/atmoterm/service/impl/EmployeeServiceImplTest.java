@@ -73,12 +73,14 @@ class EmployeeServiceImplTest {
         employee3 = this.employeeService.addEmployee(employee3);
 
         ActiveEmployeeTo activeEmployee1 = ActiveEmployeeTo.builder()
+            .id(1000L)
                 .name("Kalmar")
                 .hireDate(LocalDate.of(2000,2,2))
                 .salary(5000.0)
                 .build();
 
         ActiveEmployeeTo activeEmployee2 = ActiveEmployeeTo.builder()
+            .id(1001L)
                 .name("Ostryga")
                 .hireDate(LocalDate.of(2000,2,3))
                 .salary(5000.0)

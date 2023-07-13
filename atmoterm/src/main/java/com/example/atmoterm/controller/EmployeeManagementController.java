@@ -54,7 +54,7 @@ public class EmployeeManagementController {
         EmployeeValidator.validateIDField(employee);
         EmployeeValidator.validateNameField(employee, CRUDS.UPDATE);
 
-        if(employee.getErrorList().isEmpty()){
+        if (employee.getErrorList().isEmpty()) {
             employee = this.employeeService.updateEmployeeById(employee);
             logText = "\n\nSuccessfully updated employee, new version:\n" + employee +"\n";
             log.info(logText);

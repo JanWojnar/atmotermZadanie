@@ -38,7 +38,9 @@ public class EmployeeServiceImpl implements EmployeeService<EmployeeTo> {
         EmployeeEntity foundEmployee = this.employeeRepository.findById(employeeTo.getId()).orElse(null);
         EmployeeTo outcome = new EmployeeTo();
         if(Objects.nonNull(foundEmployee)){
-            foundEmployee.setName(employeeTo.getName());
+            if (Objects.nonNull(foundEmployee.getName())) {
+                foundEmployee.setName(employeeTo.getName());
+            }
             outcome = Mapper.map2To(this.employeeRepository.save(foundEmployee));
         } else {
             outcome.getErrorList().add("Employee with given ID does not exist!");
