@@ -11,8 +11,11 @@ import com.example.atmoterm.persistance.dao.TeamRepository;
 import com.example.atmoterm.persistance.entity.EmployeeEntity;
 import com.example.atmoterm.persistance.entity.TeamEntity;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Profile("exampleDatabase")
+@Slf4j
 public class ExampleDatabaseInitializer {
 
     private final EmployeeRepository employeeRepository;
@@ -76,5 +79,7 @@ public class ExampleDatabaseInitializer {
         teamGirlsEntity = this.teamRepository.findByName("TEAM_GIRLS");
         teamBoysEntity = this.teamRepository.findByName("TEAM_BOYS");
         teamAllEntity = this.teamRepository.findByName("TEAM_ALL");
+
+        log.info("Example database initialized!");
     }
 }
