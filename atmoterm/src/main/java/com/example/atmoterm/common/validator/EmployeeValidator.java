@@ -23,7 +23,7 @@ public class EmployeeValidator {
 
     public static boolean validateNameField(EmployeeTo employeeTo, CRUDS type) {
         boolean valid = true;
-        if (Objects.isNull(employeeTo.getName()) && type.equals(CRUDS.CREATE)) {
+        if (Objects.isNull(employeeTo.getName()) && !type.equals(CRUDS.UPDATE)) {
             valid = false;
             employeeTo.getErrorList().add("Provided JSON does not include `name` field!");
         } else if (Objects.nonNull(employeeTo.getName())
