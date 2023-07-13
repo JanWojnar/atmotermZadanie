@@ -1,13 +1,13 @@
-package com.example.atmoterm.service.mapper;
+package com.example.atmoterm.common.mapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.atmoterm.persistance.entity.AbstractEntity;
 import com.example.atmoterm.persistance.entity.ActiveEmployeeEntity;
 import com.example.atmoterm.persistance.entity.EmployeeEntity;
 import com.example.atmoterm.service.to.ActiveEmployeeTo;
 import com.example.atmoterm.service.to.EmployeeTo;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Mapper {
 

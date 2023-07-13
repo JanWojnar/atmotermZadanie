@@ -1,14 +1,8 @@
 package com.example.atmoterm.service.impl;
 
-import com.example.atmoterm.persistance.dao.ActiveEmployeeRepository;
-import com.example.atmoterm.persistance.dao.DataGenerator;
-import com.example.atmoterm.persistance.dao.EmployeeRepository;
-import com.example.atmoterm.persistance.dao.TeamRepository;
-import com.example.atmoterm.persistance.entity.EmployeeEntity;
-import com.example.atmoterm.persistance.entity.TeamEntity;
-import com.example.atmoterm.service.mapper.Mapper;
-import com.example.atmoterm.service.to.ActiveEmployeeTo;
-import com.example.atmoterm.service.to.EmployeeTo;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.example.atmoterm.common.mapper.Mapper;
+import com.example.atmoterm.persistance.dao.ActiveEmployeeRepository;
+import com.example.atmoterm.persistance.dao.DataGenerator;
+import com.example.atmoterm.persistance.dao.EmployeeRepository;
+import com.example.atmoterm.persistance.dao.TeamRepository;
+import com.example.atmoterm.persistance.entity.EmployeeEntity;
+import com.example.atmoterm.persistance.entity.TeamEntity;
+import com.example.atmoterm.service.to.ActiveEmployeeTo;
+import com.example.atmoterm.service.to.EmployeeTo;
 
 @SpringBootTest
 class EmployeeServiceImplTest {
@@ -41,23 +40,23 @@ class EmployeeServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        teamRepository.deleteAll();
-        employeeRepository.deleteAll();
-        activeEmployeeRepository.deleteAll();
+        this.teamRepository.deleteAll();
+        this.employeeRepository.deleteAll();
+        this.activeEmployeeRepository.deleteAll();
     }
 
     @AfterEach
     void tearDown() {
-        teamRepository.deleteAll();
-        employeeRepository.deleteAll();
-        activeEmployeeRepository.deleteAll();
+        this.teamRepository.deleteAll();
+        this.employeeRepository.deleteAll();
+        this.activeEmployeeRepository.deleteAll();
     }
 
     @Test
     void shouldSaveNewEmployeeAndFindItUsingService(){
         EmployeeTo employee = EmployeeTo.builder().name("Jan").build();
-        employeeService.addEmployee(employee);
-        EmployeeTo foundEmployee = employeeService.findByName(employee);
+        this.employeeService.addEmployee(employee);
+        EmployeeTo foundEmployee = this.employeeService.findByName(employee);
         Assertions.assertNotNull(foundEmployee);
         Assertions.assertNotNull(foundEmployee.getId());
         Assertions.assertEquals(employee.getName(), foundEmployee.getName());
@@ -69,9 +68,9 @@ class EmployeeServiceImplTest {
         EmployeeTo employee2 = EmployeeTo.builder().name("Zuzanna").build();
         EmployeeTo employee3 = EmployeeTo.builder().name("Klara").build();
 
-        employee1 = employeeService.addEmployee(employee1);
-        employee2 = employeeService.addEmployee(employee2);
-        employee3 = employeeService.addEmployee(employee3);
+        employee1 = this.employeeService.addEmployee(employee1);
+        employee2 = this.employeeService.addEmployee(employee2);
+        employee3 = this.employeeService.addEmployee(employee3);
 
         ActiveEmployeeTo activeEmployee1 = ActiveEmployeeTo.builder()
                 .name("Kalmar")
@@ -85,16 +84,16 @@ class EmployeeServiceImplTest {
                 .salary(5000.0)
                 .build();
 
-        activeEmployeeService.addEmployee(activeEmployee1);
-        activeEmployeeService.addEmployee(activeEmployee2);
+        this.activeEmployeeService.addEmployee(activeEmployee1);
+        this.activeEmployeeService.addEmployee(activeEmployee2);
 
-        List<EmployeeTo> foundGenericEmployees = employeeService.findAllEmployees();
-        List<ActiveEmployeeTo> foundActiveEmployees = activeEmployeeService.findAllActiveEmployees();
+        List<EmployeeTo> foundGenericEmployees = this.employeeService.findAllEmployees();
+        List<ActiveEmployeeTo> foundActiveEmployees = this.activeEmployeeService.findAllEmployees();
 
         Assertions.assertEquals(5,foundGenericEmployees.size());
         Assertions.assertEquals(2, foundActiveEmployees.size());
 
-        List<EmployeeTo> foundInactiveEmployees = employeeService.findInactiveEmployees();
+        List<EmployeeTo> foundInactiveEmployees = this.employeeService.findInactiveEmployees();
         Assertions.assertEquals(3, foundInactiveEmployees.size());
         Assertions.assertTrue(foundInactiveEmployees.containsAll(List.of(employee1,employee2,employee3)));
     }
@@ -114,19 +113,21 @@ class EmployeeServiceImplTest {
 
         DataGenerator.save5EmployeesIn3Teams(employee1, employee2, employee3, employee4, employee5,
                 teamGirlsEntity, teamBoysEntity, teamAllEntity,
-                employeeRepository, teamRepository);
+            this.employeeRepository, this.teamRepository);
 
         //when
-        EmployeeTo removedEmployee = employeeService.removeEmployeeWithName(EmployeeTo.builder().name("Karol").build());
+        EmployeeTo removedEmployee =
+            this.employeeService.removeEmployeeWithName(EmployeeTo.builder().name("Karol").build());
 
         //then
-        Assertions.assertNull(employeeRepository.findByName("Karol"));
+        Assertions.assertNull(this.employeeRepository.findByName("Karol"));
 
-        teamBoysEntity = teamRepository.findByName("TEAM_BOYS");
-        teamAllEntity = teamRepository.findByName("TEAM_ALL");
+        teamBoysEntity = this.teamRepository.findByName("TEAM_BOYS");
+        teamAllEntity = this.teamRepository.findByName("TEAM_ALL");
         Assertions.assertFalse(teamAllEntity.getEmployees().contains(Mapper.map2Entity(removedEmployee)));
         Assertions.assertFalse(teamBoysEntity.getEmployees().contains(Mapper.map2Entity(removedEmployee)));
-        Assertions.assertTrue(teamBoysEntity.getEmployees().contains(employeeRepository.findByName("Jan")));
+        Assertions
+            .assertTrue(teamBoysEntity.getEmployees().contains(this.employeeRepository.findByName("Jan")));
 
     }
 
