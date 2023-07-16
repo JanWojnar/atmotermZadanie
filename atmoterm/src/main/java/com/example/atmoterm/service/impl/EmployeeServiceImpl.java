@@ -68,7 +68,15 @@ public class EmployeeServiceImpl implements EmployeeService<EmployeeTo> {
     }
 
     public EmployeeTo findByName(EmployeeTo employeeTo){
-        return Mapper.map2To(this.employeeRepository.findByName(employeeTo.getName()));
+        EmployeeEntity foundEmployee =
+            this.employeeRepository.findByName(employeeTo.getName());
+        EmployeeTo outcome = new EmployeeTo();
+        if (Objects.nonNull(foundEmployee)) {
+            outcome = Mapper.map2To(foundEmployee);
+        } else {
+            outcome.getErrorList().add("Employee with given name does not exist!");
+        }
+        return outcome;
     }
 
     public List<EmployeeTo> findAllEmployees(){

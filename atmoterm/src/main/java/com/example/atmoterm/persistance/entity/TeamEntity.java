@@ -1,17 +1,26 @@
 package com.example.atmoterm.persistance.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import org.springframework.validation.annotation.Validated;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.springframework.validation.annotation.Validated;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Getter
@@ -36,11 +45,6 @@ public class TeamEntity extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID")
     )
     private List<EmployeeEntity> employees = new ArrayList<>();
-
-    public void addEmployee(EmployeeEntity employee){
-        this.employees.add(employee);
-        employee.getTeams().add(this);
-    }
 
     public void removeEmployee(EmployeeEntity employee){
         this.employees.remove(employee);

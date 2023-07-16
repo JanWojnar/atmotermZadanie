@@ -1,8 +1,9 @@
 package com.example.atmoterm.persistance.dao;
 
-import com.example.atmoterm.persistance.entity.ActiveEmployeeEntity;
-import com.example.atmoterm.persistance.entity.EmployeeEntity;
-import com.example.atmoterm.persistance.entity.TeamEntity;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.atmoterm.persistance.entity.ActiveEmployeeEntity;
+import com.example.atmoterm.persistance.entity.EmployeeEntity;
+import com.example.atmoterm.persistance.entity.TeamEntity;
 
 @SpringBootTest
 class RepositoryTest {
@@ -28,16 +29,16 @@ class RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        teamRepository.deleteAll();
-        employeeRepository.deleteAll();
-        activeEmployeeRepository.deleteAll();
+        this.teamRepository.deleteAll();
+        this.employeeRepository.deleteAll();
+        this.activeEmployeeRepository.deleteAll();
     }
 
     @AfterEach
     void tearDown() {
-        teamRepository.deleteAll();
-        employeeRepository.deleteAll();
-        activeEmployeeRepository.deleteAll();
+        this.teamRepository.deleteAll();
+        this.employeeRepository.deleteAll();
+        this.activeEmployeeRepository.deleteAll();
     }
 
     @Test
@@ -55,13 +56,13 @@ class RepositoryTest {
 
         DataGenerator.save5EmployeesIn3Teams(employee1, employee2, employee3, employee4, employee5,
                 teamGirlsEntity, teamBoysEntity, teamAllEntity,
-                employeeRepository, teamRepository);
+            this.employeeRepository, this.teamRepository);
 
-        Assertions.assertEquals(employee1.getName(), employeeRepository.findByName("Jan").getName());
-        Assertions.assertEquals(employee2.getName(), employeeRepository.findByName("Zuzanna").getName());
-        Assertions.assertEquals(employee3.getName(), employeeRepository.findByName("Karol").getName());
-        Assertions.assertEquals(employee4.getName(), employeeRepository.findByName("Kasia").getName());
-        Assertions.assertEquals(employee5.getName(), employeeRepository.findByName("Marek").getName());
+        Assertions.assertEquals(employee1.getName(), this.employeeRepository.findByName("Jan").getName());
+        Assertions.assertEquals(employee2.getName(), this.employeeRepository.findByName("Zuzanna").getName());
+        Assertions.assertEquals(employee3.getName(), this.employeeRepository.findByName("Karol").getName());
+        Assertions.assertEquals(employee4.getName(), this.employeeRepository.findByName("Kasia").getName());
+        Assertions.assertEquals(employee5.getName(), this.employeeRepository.findByName("Marek").getName());
 
         Assertions.assertTrue(teamGirlsEntity.getEmployees().containsAll(List.of(employee2, employee4)));
         Assertions.assertTrue(teamBoysEntity.getEmployees().containsAll(List.of(employee1, employee3, employee5)));
@@ -81,15 +82,15 @@ class RepositoryTest {
 
         DataGenerator.save5EmployeesIn3Teams(employee1, employee2, employee3, employee4, employee5,
                 teamGirlsEntity, teamBoysEntity, teamAllEntity,
-                employeeRepository, teamRepository);
+            this.employeeRepository, this.teamRepository);
 
         //REMOVING TEAM
-        teamRepository.delete(teamRepository.findByName("TEAM_GIRLS"));
-        Assertions.assertNull(teamRepository.findByName("TEAM_GIRLS"));
+        this.teamRepository.delete(this.teamRepository.findByName("TEAM_GIRLS"));
+        Assertions.assertNull(this.teamRepository.findByName("TEAM_GIRLS"));
 
         //...DOES NOT REMOVE EMPLOYEES
-        employee2 = employeeRepository.findByName("Zuzanna");
-        employee4 = employeeRepository.findByName("Kasia");
+        employee2 = this.employeeRepository.findByName("Zuzanna");
+        employee4 = this.employeeRepository.findByName("Kasia");
 
         Assertions.assertNotNull(employee2);
         Assertions.assertNotNull(employee4);
@@ -112,22 +113,22 @@ class RepositoryTest {
 
         DataGenerator.save5EmployeesIn3Teams(employee1, employee2, employee3, employee4, employee5,
                 teamGirlsEntity, teamBoysEntity, teamAllEntity,
-                employeeRepository, teamRepository);
+            this.employeeRepository, this.teamRepository);
 
         //TO REMOVE EMPLOYEE FIRSTLY DELETE HIM/HER FROM TEAMS!
-        EmployeeEntity employeeToBeDeleted = employeeRepository.findByName("Jan");
+        EmployeeEntity employeeToBeDeleted = this.employeeRepository.findByName("Jan");
         List<TeamEntity> teamsToClearFromEmployee = new ArrayList<>(employeeToBeDeleted.getTeams());
         for (TeamEntity team : teamsToClearFromEmployee) {
             team.removeEmployee(employeeToBeDeleted);
-            teamRepository.save(team);
+            this.teamRepository.save(team);
         }
-        employeeRepository.delete(employeeToBeDeleted);
+        this.employeeRepository.delete(employeeToBeDeleted);
 
-        teamBoysEntity = teamRepository.findByName("TEAM_BOYS");
-        teamAllEntity = teamRepository.findByName("TEAM_ALL");
+        teamBoysEntity = this.teamRepository.findByName("TEAM_BOYS");
+        teamAllEntity = this.teamRepository.findByName("TEAM_ALL");
         Assertions.assertFalse(teamAllEntity.getEmployees().contains(employeeToBeDeleted));
         Assertions.assertFalse(teamBoysEntity.getEmployees().contains(employeeToBeDeleted));
-        Assertions.assertNull(employeeRepository.findByName("Jan"));
+        Assertions.assertNull(this.employeeRepository.findByName("Jan"));
     }
 
         @Test
@@ -145,23 +146,23 @@ class RepositoryTest {
 
         DataGenerator.save5EmployeesIn3Teams(employee1, employee2, employee3, employee4, employee5,
                     teamGirlsEntity, teamBoysEntity, teamAllEntity,
-                    employeeRepository, teamRepository);
+            this.employeeRepository, this.teamRepository);
 
         //ADDING ACTIVEEMPLOYEE
         ActiveEmployeeEntity activeEmployeeEntity = ActiveEmployeeEntity.builder().name("Bob").salary(9999.0).hireDate(LocalDate.of(2000,11,12)).build();
-        activeEmployeeEntity = activeEmployeeRepository.save(activeEmployeeEntity);
+        activeEmployeeEntity = this.activeEmployeeRepository.save(activeEmployeeEntity);
 
-        teamBoysEntity = teamRepository.findByName("TEAM_BOYS");
-        teamAllEntity = teamRepository.findByName("TEAM_ALL");
+        teamBoysEntity = this.teamRepository.findByName("TEAM_BOYS");
+        teamAllEntity = this.teamRepository.findByName("TEAM_ALL");
 
         //ADDING ACTIVEEMPLOYEE TO TEAMS
         activeEmployeeEntity.addTeam(teamAllEntity);
         activeEmployeeEntity.addTeam(teamBoysEntity);
 
-        teamRepository.saveAll(List.of(teamBoysEntity, teamAllEntity));
+        this.teamRepository.saveAll(List.of(teamBoysEntity, teamAllEntity));
 
-        teamBoysEntity = teamRepository.findByName("TEAM_BOYS");
-        teamAllEntity = teamRepository.findByName("TEAM_ALL");
+        teamBoysEntity = this.teamRepository.findByName("TEAM_BOYS");
+        teamAllEntity = this.teamRepository.findByName("TEAM_ALL");
 
         Assertions.assertTrue(teamBoysEntity.getEmployees().contains(activeEmployeeEntity));
         Assertions.assertTrue(teamAllEntity.getEmployees().contains(activeEmployeeEntity));
@@ -175,36 +176,42 @@ class RepositoryTest {
                 .hireDate(LocalDate.of(2000,2,2))
                 .salary(-0.5)
                 .build();
-        Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, ()->activeEmployeeRepository.save(badSalaryEmployee));
+        Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class,
+            () -> this.activeEmployeeRepository.save(badSalaryEmployee));
 
         ActiveEmployeeEntity badHireDateEmployee = ActiveEmployeeEntity.builder()
                 .name("Karol")
                 .hireDate(LocalDate.of(3000,2,2))
                 .salary(4000.0)
                 .build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class, ()->activeEmployeeRepository.save(badHireDateEmployee));
+        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+            () -> this.activeEmployeeRepository.save(badHireDateEmployee));
 
         ActiveEmployeeEntity shortNameEmployee = ActiveEmployeeEntity.builder()
                 .name("")
                 .hireDate(LocalDate.of(2000,2,2))
                 .salary(4000.0)
                 .build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class, ()->activeEmployeeRepository.save(shortNameEmployee));
+        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+            () -> this.activeEmployeeRepository.save(shortNameEmployee));
 
         ActiveEmployeeEntity longNameEmployee = ActiveEmployeeEntity.builder()
                 .name("x".repeat(51))
                 .hireDate(LocalDate.of(2000,2,2))
                 .salary(4000.0)
                 .build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class, ()->activeEmployeeRepository.save(longNameEmployee));
+        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+            () -> this.activeEmployeeRepository.save(longNameEmployee));
     }
 
     @Test
     void teamValidationTest(){
         TeamEntity nameTooShort = TeamEntity.builder().name("").build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class, ()->teamRepository.save(nameTooShort));
+        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+            () -> this.teamRepository.save(nameTooShort));
 
         TeamEntity nameTooLong = TeamEntity.builder().name("x".repeat(51)).build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class, ()->teamRepository.save(nameTooLong));
+        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+            () -> this.teamRepository.save(nameTooLong));
     }
 }

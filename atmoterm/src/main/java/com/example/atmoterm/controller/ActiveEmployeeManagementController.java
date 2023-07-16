@@ -40,30 +40,34 @@ public class ActiveEmployeeManagementController {
 
         if (EmployeeValidator.validateActiveEmployee(employee, CRUDS.CREATE)) {
             employee = this.activeEmployeeService.addEmployee(employee);
-            logText = "\n\nSuccessfully added new employee:\n" + employee.toString() + "\n";
-            log.info(logText);
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully added new employee:\n" + employee.toString() + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
-    @PostMapping(value = "/updateEmployeeNameById")
+    @PostMapping(value = "/updateEmployeeById")
     public ResponseEntity<Object> updateEmployeeById(@RequestBody ActiveEmployeeTo employee)
         throws JsonProcessingException {
         String logText;
 
         if (EmployeeValidator.validateActiveEmployee(employee, CRUDS.UPDATE)) {
             employee = this.activeEmployeeService.updateEmployeeById(employee);
-            logText = "\n\nSuccessfully updated employee, new version:\n" + employee + "\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok().body(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully updated employee, new version:\n" + employee + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
@@ -73,13 +77,17 @@ public class ActiveEmployeeManagementController {
         String logText;
         if (EmployeeValidator.validateNameField(employee, CRUDS.DELETE)) {
             employee = this.activeEmployeeService.removeEmployeeWithName(employee);
-            logText = "\n\nSuccessfully deleted employee:\n" + employee.toString() + "\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok().body(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully deleted employee:\n" + employee.toString() + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
@@ -89,21 +97,25 @@ public class ActiveEmployeeManagementController {
         String logText;
         if (EmployeeValidator.validateNameField(employee, CRUDS.SEARCH)) {
             employee = this.activeEmployeeService.findByName(employee);
-            logText = "\n\nSuccessfully found employee by name:\n" + employee.toString() + "\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok().body(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully found employee by name:\n" + employee.toString() + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
-    @GetMapping(value = "/findAllEmployees")
+    @GetMapping(value = "/findActiveEmployees")
     public ResponseEntity<Object> findAllEmployees() throws JsonProcessingException {
         String logText;
         List<ActiveEmployeeTo> allEmployees = this.activeEmployeeService.findAllEmployees();
-        logText = "\n\nSuccessfully found all employees:\n" + allEmployees + "\n";
+        logText = "\n\nSuccessfully found all active employees:\n" + allEmployees + "\n";
         log.info(logText);
         return ResponseEntity.ok(produceJson(allEmployees));
     }

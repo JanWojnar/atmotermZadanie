@@ -21,7 +21,7 @@ import com.example.atmoterm.service.to.ActiveEmployeeTo;
 import com.example.atmoterm.service.to.EmployeeTo;
 
 @SpringBootTest
-class EmployeeServiceImplTest {
+class EmployeeServiceTest {
 
     @Autowired
     EmployeeServiceImpl employeeService;

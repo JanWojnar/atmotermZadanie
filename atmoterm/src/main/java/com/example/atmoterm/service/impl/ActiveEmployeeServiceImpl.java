@@ -25,8 +25,7 @@ public class ActiveEmployeeServiceImpl implements EmployeeService<ActiveEmployee
     private TeamRepository teamRepository;
 
     public ActiveEmployeeTo addEmployee(ActiveEmployeeTo employeeTo) {
-        ActiveEmployeeEntity employeeEntity =
-            this.activeEmployeeRepository.findById(employeeTo.getId()).orElse(new ActiveEmployeeEntity());
+        ActiveEmployeeEntity employeeEntity = new ActiveEmployeeEntity();
         employeeEntity.setName(employeeTo.getName());
         employeeEntity.setSalary(employeeTo.getSalary());
         employeeEntity.setHireDate(employeeTo.getHireDate());
@@ -49,7 +48,7 @@ public class ActiveEmployeeServiceImpl implements EmployeeService<ActiveEmployee
             }
             outcome = Mapper.map2To(this.activeEmployeeRepository.save(foundEmployee));
         } else {
-            outcome.getErrorList().add("Employee with given ID does not exist!");
+            outcome.getErrorList().add("Active employee with given ID does not exist!");
         }
         return outcome;
     }
@@ -67,13 +66,21 @@ public class ActiveEmployeeServiceImpl implements EmployeeService<ActiveEmployee
             }
             this.activeEmployeeRepository.delete(foundEmployee);
         } else {
-            outcome.getErrorList().add("Employee with given name does not exist!");
+            outcome.getErrorList().add("Active employee with given name does not exist!");
         }
         return outcome;
     }
 
     public ActiveEmployeeTo findByName(ActiveEmployeeTo employeeTo) {
-        return Mapper.map2To(this.activeEmployeeRepository.findByName(employeeTo.getName()));
+        ActiveEmployeeEntity foundEmployee =
+            this.activeEmployeeRepository.findByName(employeeTo.getName());
+        ActiveEmployeeTo outcome = new ActiveEmployeeTo();
+        if (Objects.nonNull(foundEmployee)) {
+            outcome = Mapper.map2To(foundEmployee);
+        } else {
+            outcome.getErrorList().add("Active employee with given name does not exist!");
+        }
+        return outcome;
     }
 
     public List<ActiveEmployeeTo> findAllEmployees() {

@@ -36,7 +36,7 @@ public class ExampleDatabaseInitializer {
         init();
     }
 
-    private void init() {
+    public void init() {
 
         EmployeeEntity employee1 = EmployeeEntity.builder().name("Jan").build();
         EmployeeEntity employee2 = EmployeeEntity.builder().name("Zuzanna").build();
@@ -106,6 +106,6 @@ public class ExampleDatabaseInitializer {
         employee9.addTeam(teamAllEntity);
 
         this.teamRepository.saveAll(List.of(teamGirlsEntity, teamBoysEntity, teamAllEntity));
-        log.info("Example database initialized!");
+        log.info("Example database initialized and populated!");
     }
 }

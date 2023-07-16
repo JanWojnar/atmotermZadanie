@@ -1,5 +1,6 @@
 package com.example.atmoterm.common.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ public class Mapper {
                 .versionNumber(employee.getVersionNumber())
                 .name(employee.getName())
                 .teamIDs(employee.getTeams().stream().map(AbstractEntity::getId).collect(Collectors.toList()))
+            .errorList(new ArrayList<>())
                 .build();
     }
 
@@ -39,6 +41,7 @@ public class Mapper {
                 .hireDate(activeEmployee.getHireDate())
                 .name(activeEmployee.getName())
                 .teamIDs(activeEmployee.getTeams().stream().map(AbstractEntity::getId).collect(Collectors.toList()))
+            .errorList(new ArrayList<>())
                 .build();
     }
 
@@ -54,4 +57,5 @@ public class Mapper {
                 .hireDate(employeeTo.getHireDate())
                 .build();
     }
+
 }

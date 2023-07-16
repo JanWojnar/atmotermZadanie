@@ -37,18 +37,23 @@ public class EmployeeManagementController {
         String logText;
         if (EmployeeValidator.validateNameField(employee, CRUDS.CREATE)) {
             employee = this.employeeService.addEmployee(employee);
-            logText = "\n\nSuccessfully added new employee:\n" + employee.toString()+"\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok().body(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully added new employee:\n" + employee.toString() + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
-    @PostMapping(value = "/updateEmployeeNameById")
-    public ResponseEntity<Object> updateEmployeeNameById(@RequestBody EmployeeTo employee) throws JsonProcessingException {
+    @PostMapping(value = "/updateEmployeeById")
+    public ResponseEntity<Object> updateEmployeeById(@RequestBody EmployeeTo employee)
+        throws JsonProcessingException {
         String logText;
 
         EmployeeValidator.validateIDField(employee);
@@ -56,13 +61,17 @@ public class EmployeeManagementController {
 
         if (employee.getErrorList().isEmpty()) {
             employee = this.employeeService.updateEmployeeById(employee);
-            logText = "\n\nSuccessfully updated employee, new version:\n" + employee +"\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok().body(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully updated employee, new version:\n" + employee + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
@@ -71,13 +80,17 @@ public class EmployeeManagementController {
         String logText;
         if (EmployeeValidator.validateNameField(employee, CRUDS.DELETE)) {
             employee = this.employeeService.removeEmployeeWithName(employee);
-            logText = "\n\nSuccessfully deleted employee:\n" + employee.toString()+"\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok().body(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully deleted employee:\n" + employee.toString() + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
@@ -86,13 +99,17 @@ public class EmployeeManagementController {
         String logText;
         if (EmployeeValidator.validateNameField(employee, CRUDS.SEARCH)) {
             employee = this.employeeService.findByName(employee);
-            logText = "\n\nSuccessfully found employee by name:\n" + employee.toString()+"\n";
-            log.info(logText);
+            if (!employee.getErrorList().isEmpty()) {
+                log.info(employee.getErrorList().toString());
+                return ResponseEntity.ok(produceJson(employee.getErrorList()));
+            }
         } else {
             logText = "Bad input JSON: " + employee.getErrorList();
             log.warn(logText);
             return ResponseEntity.badRequest().body(produceJson(employee.getErrorList()));
         }
+        logText = "\n\nSuccessfully found employee by name:\n" + employee.toString() + "\n";
+        log.info(logText);
         return ResponseEntity.ok(produceJson(employee));
     }
 
@@ -108,10 +125,10 @@ public class EmployeeManagementController {
     @GetMapping(value = "/findInactiveEmployees")
     public ResponseEntity<Object> findInactiveEmployees() throws JsonProcessingException {
         String logText;
-        List<EmployeeTo> findInactiveEmployees = this.employeeService.findInactiveEmployees();
-        logText = "\n\nSuccessfully found all inactive employees:\n" + findInactiveEmployees+"\n";
+        List<EmployeeTo> foundInactiveEmployees = this.employeeService.findInactiveEmployees();
+        logText = "\n\nSuccessfully found all inactive employees:\n" + foundInactiveEmployees + "\n";
         log.info(logText);
-        return ResponseEntity.ok(produceJson(findInactiveEmployees));
+        return ResponseEntity.ok(produceJson(foundInactiveEmployees));
     }
 
     private String produceJson(Object o) throws JsonProcessingException {

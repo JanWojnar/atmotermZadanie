@@ -1,18 +1,33 @@
-Zadanie rekrutacyjne ATMOTERM
+**Zadanie rekrutacyjne ATMOTERM**
 
-TODO:
+Aplikacja po uruchomieniu znajduje się pod adresem http://localhost:8080/atmotermApp
+Proszę o uruchomienie aplikacji z profilem "**exampleDatabase**", dzięki któremu 9 (w tym 4 aktywnych) pracowników zostanie przydzilonych
+do trzech zespołów.
 
--transformacja inactive na active
 
--transformacja activa na inactive
+Bezpośredni dostęp do bazy danych pod adresem: http://localhost:8080/atmotermApp/h2-console
 
--testy dla konwersji
+Logowanie:
 
--bean zasilajacy baze danych inicjalnymi danymi, dopisać aktywnych pracowników we wszystkich 3 zespołach
+driver class: org.h2.Driver
 
--przygotowanie postmana pod testy E2E
+jdbc url: jdbc:h2:mem:mydb
 
--stworzenie instrukcji readmi z linkami do apki, wersją javy itd
+username: sa
+
+password: password
+
+**Testy**
+
+Stworzyłem parę klas testowych, pokrycie nie wynosi 100% ponieważ byłem na urlopie, a aplikacja powstała w ciągu 2-3 dni po pracy. 
+Najistotniejsza klasa testowa
+ to RepositoryTest.java, w której inicjalizowana jest baza danych łącznie z zespołami do których zostali
+  przydzieleni pracownicy, nastepnie po operacja CRUDowych sprawdzany jest stan bazy :)
+
+
+Załączyłem plik **atmoterm.zadanie.postman_collection.json**, w którym znajduje się kilkanaście zapytań
+ testujących działanie aplikacji i endpointów.
+
 
 
 
