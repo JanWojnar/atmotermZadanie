@@ -1,5 +1,7 @@
 **Zadanie rekrutacyjne ATMOTERM**
 
+Do startu używać JDK w wersji 11+
+
 Aplikacja po uruchomieniu znajduje się pod adresem http://localhost:8080/atmotermApp
 Proszę o uruchomienie aplikacji z profilem "**exampleDatabase**", dzięki któremu 9 (w tym 4 aktywnych) pracowników zostanie przydzilonych
 do trzech zespołów.
@@ -26,7 +28,7 @@ Najistotniejsza klasa testowa
 
 
 Załączyłem plik **atmoterm.zadanie.postman_collection.json**, w którym znajduje się kilkanaście zapytań
- testujących działanie aplikacji i endpointów.
+ testujących działanie aplikacji i endpointów. Plik ten można bardzo łatwo importować w programie Postman.
 
 
 
