@@ -2,9 +2,9 @@
 
 **Autor: Jan Wojnar**
 
-Do startu używać JDK w wersji 11+ przy pomocy IntelliJ lub komendy
+Do startu używać JDK w wersji 11+ przy pomocy IntelliJ lub po użyciu `mvn pakcage` komendy
 
-java -jar -Dspring.profiles.active=exampleDatabase C:\path\to\jar\atmoterm-1.0.0.jar
+`java -jar -Dspring.profiles.active=exampleDatabase C:\path\to\jar\atmoterm-1.0.0.jar`
 
 Aplikacja po uruchomieniu znajduje się pod adresem http://localhost:8080/atmotermApp
 Proszę o uruchomienie aplikacji z profilem "**exampleDatabase**", dzięki któremu 9 (w tym 4 aktywnych) pracowników zostanie przydzilonych
