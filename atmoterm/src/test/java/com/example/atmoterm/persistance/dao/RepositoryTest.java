@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -184,7 +186,7 @@ class RepositoryTest {
                 .hireDate(LocalDate.of(3000,2,2))
                 .salary(4000.0)
                 .build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+        Assertions.assertThrows(ConstraintViolationException.class,
             () -> this.activeEmployeeRepository.save(badHireDateEmployee));
 
         ActiveEmployeeEntity shortNameEmployee = ActiveEmployeeEntity.builder()
@@ -192,7 +194,7 @@ class RepositoryTest {
                 .hireDate(LocalDate.of(2000,2,2))
                 .salary(4000.0)
                 .build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+        Assertions.assertThrows(ConstraintViolationException.class,
             () -> this.activeEmployeeRepository.save(shortNameEmployee));
 
         ActiveEmployeeEntity longNameEmployee = ActiveEmployeeEntity.builder()
@@ -200,18 +202,18 @@ class RepositoryTest {
                 .hireDate(LocalDate.of(2000,2,2))
                 .salary(4000.0)
                 .build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+        Assertions.assertThrows(ConstraintViolationException.class,
             () -> this.activeEmployeeRepository.save(longNameEmployee));
     }
 
     @Test
     void teamValidationTest(){
         TeamEntity nameTooShort = TeamEntity.builder().name("").build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+        Assertions.assertThrows(ConstraintViolationException.class,
             () -> this.teamRepository.save(nameTooShort));
 
         TeamEntity nameTooLong = TeamEntity.builder().name("x".repeat(51)).build();
-        Assertions.assertThrows(org.springframework.transaction.TransactionSystemException.class,
+        Assertions.assertThrows(ConstraintViolationException.class,
             () -> this.teamRepository.save(nameTooLong));
     }
 }
