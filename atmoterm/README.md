@@ -25,10 +25,10 @@ password: password
 
 **Testy**
 
-Stworzyłem parę klas testowych, pokrycie nie wynosi 100% ponieważ byłem na urlopie, a aplikacja powstała w ciągu 2-3 dni po pracy. 
+Stworzyłem kilka klas testowych, pokrycie nie wynosi 100% ponieważ byłem na urlopie, a aplikacja powstała w ciągu 2-3 dni po pracy. 
 Najistotniejsza klasa testowa
  to RepositoryTest.java, w której inicjalizowana jest baza danych łącznie z zespołami do których zostali
-  przydzieleni pracownicy, nastepnie po operacja CRUDowych sprawdzany jest stan bazy :)
+  przydzieleni pracownicy, nastepnie po operacjach CRUDowych sprawdzany jest stan bazy :)
 
 
 Załączyłem plik **atmoterm.zadanie.postman_collection.json**, w którym znajduje się kilkanaście zapytań
